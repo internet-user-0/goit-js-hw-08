@@ -21,7 +21,6 @@ return items
       <a href="${original}" >
       <img
       src="${preview}"
-      data-source="${original}"
       alt="${description}"
    />
    </a>`;
@@ -32,7 +31,7 @@ console.log(imagesMarkup);
 
 markingPlace.addEventListener("click", SimpleLightbox);
 
-let gallery = new SimpleLightbox('.gallery a');
+new SimpleLightbox('.gallery a');
 gallery.on('show.simplelightbox', function () {
 	
 });

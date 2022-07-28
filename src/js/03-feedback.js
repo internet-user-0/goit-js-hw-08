@@ -1,34 +1,41 @@
 import throttle from 'lodash.throttle';
 
-const form = document.querySelector('.feedback-form')
-
-const storageKey = "feedback-form-state";
-
-form.addEventListener('input', throttle(onInputChange, 500))
+const LOCALSTORAGE_KEY = 'storageKey';
+const form = document.querySelector('.feedback-form');
 
 
-form.addEventListener('submit', (e) => {
-   e.preventDefault();
+initForm();
+
+
+form.addEventListener('submit', evt => {
+   evt.preventDefault();
    const formData = new FormData(form);
-   formData.forEach((name, value) => {
-      console.log(name, value);
-   })});
-
-
-   function onInputChange (e) {
-      let parsedForm = localStorage.getItem(storageKey);
-      parsedForm = parsedForm ? JSON.parse(parsedForm) : {};
-      parsedForm[e.target.name] = e.target.value;
-      localStorage.setItem(storageKey, JSON.stringify(parsedForm))
-   };
-
-
-
-const saveValue = {};
-
-form.addEventListener('submit', evt =>{
-   saveValue[evt.target.email] = evt.target.email.value;
-   saveValue[evt.target.message] = evt.target.message.value;
-
-   localStorage.setItem('saveValue', JSON.stringify(saveValue));
+   formData.forEach((value, name) => console.log(value, name))
 });
+
+
+
+form.addEventListener('input', throttle(evt => {
+   let nevStorageKey = localStorage.getItem(LOCALSTORAGE_KEY);
+   nevStorageKey = nevStorageKey ? nevStorageKey = JSON.parse(nevStorageKey) : {};
+
+   nevStorageKey[evt.target.name] = evt.target.value;
+   localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(nevStorageKey));
+}, 500));
+
+form.addEventListener('submit', evt => {
+   localStorage.removeItem(LOCALSTORAGE_KEY);
+   Object.keys(LOCALSTORAGE_KEY).forEach(name => {
+      form.elements[name].value = "";
+   });
+});
+
+function initForm() {
+   let nevStorageKey = localStorage.getItem(LOCALSTORAGE_KEY);
+   if (nevStorageKey) {
+      nevStorageKey = JSON.parse(nevStorageKey);
+      Object.entries(nevStorageKey).forEach(([name, value]) => {
+         form.elements[name].value = value;
+      });
+   }
+};
