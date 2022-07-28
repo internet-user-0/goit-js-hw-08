@@ -24,10 +24,8 @@ form.addEventListener('input', throttle(evt => {
 }, 500));
 
 form.addEventListener('submit', evt => {
+   evt.currentTarget.reset();
    localStorage.removeItem(LOCALSTORAGE_KEY);
-   Object.keys(LOCALSTORAGE_KEY).forEach(name => {
-      form.elements[name].value = "";
-   });
 });
 
 function initForm() {
