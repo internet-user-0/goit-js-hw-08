@@ -1,7 +1,9 @@
 import throttle from 'lodash.throttle';
 
-const LOCALSTORAGE_KEY = 'storageKey';
+// const LOCALSTORAGE_KEY = 'storageKey';
 const form = document.querySelector('.feedback-form');
+
+const storageKey = {};
 
 
 initForm();
@@ -11,28 +13,29 @@ form.addEventListener('submit', evt => {
    evt.preventDefault();
    const formData = new FormData(form);
    formData.forEach((value, name) => console.log(value, name))
+
+   localStorage.removeItem(storageKey);
+   evt.currentTarget.reset();
 });
 
 
 
-form.addEventListener('input', throttle(evt => {
-   let nevStorageKey = localStorage.getItem(LOCALSTORAGE_KEY);
+form.addEventListener('input', throttle(saveText, 500));
+
+function saveText(evt) {
+   let nevStorageKey = localStorage.getItem(storageKey);
    nevStorageKey = nevStorageKey ? nevStorageKey = JSON.parse(nevStorageKey) : {};
 
    nevStorageKey[evt.target.name] = evt.target.value;
-   localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(nevStorageKey));
-}, 500));
+   localStorage.setItem(storageKey, JSON.stringify(nevStorageKey));
+};
 
-form.addEventListener('submit', evt => {
-   evt.currentTarget.reset();
-   localStorage.removeItem(LOCALSTORAGE_KEY);
-});
 
 function initForm() {
-   let nevStorageKey = localStorage.getItem(LOCALSTORAGE_KEY);
+   const nevStorageKey = localStorage.getItem(storageKey);
    if (nevStorageKey) {
-      nevStorageKey = JSON.parse(nevStorageKey);
-      Object.entries(nevStorageKey).forEach(([name, value]) => {
+      const historyCheck = JSON.parse(nevStorageKey);
+      Object.entries(historyCheck).forEach(([name, value]) => {
          form.elements[name].value = value;
       });
    }

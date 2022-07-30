@@ -4,7 +4,6 @@ import { galleryItems } from './gallery-items';
 import "simplelightbox/dist/simple-lightbox.min.css";
 import SimpleLightbox from "simplelightbox";
 
-console.log(galleryItems);
 
 
 const markingPlace = document.querySelector(".gallery");
@@ -18,12 +17,16 @@ function createImagesMarkup(items) {
 return items
    .map(({ preview, original, description }) => {
       return `
-      <a href="${original}" >
-      <img
+      <div class="gallery__item">
+   <a class="gallery__link" href="${original}" >
+   <img
+      class="gallery__image"
       src="${preview}"
+      data-source="${original}"
       alt="${description}"
    />
-   </a>`;
+   </a>
+</div>`;
    })
    .join("");
 }
@@ -31,7 +34,11 @@ console.log(imagesMarkup);
 
 markingPlace.addEventListener("click", SimpleLightbox);
 
-new SimpleLightbox('.gallery a');
-gallery.on('show.simplelightbox', function () {
+// new SimpleLightbox('.gallery a');
+// gallery.on('show.simplelightbox', function () {
 	
+// });
+let gallery = new SimpleLightbox('.gallery a');
+gallery.on('show.simplelightbox', function () {
+	// do something…
 });
