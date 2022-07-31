@@ -23,11 +23,8 @@ form.addEventListener('submit', evt => {
 form.addEventListener('input', throttle(saveText, 500));
 
 function saveText(evt) {
-   let nevStorageKey = localStorage.getItem(storageKey);
-   nevStorageKey = nevStorageKey ? nevStorageKey = JSON.parse(nevStorageKey) : {};
-
-   nevStorageKey[evt.target.name] = evt.target.value;
-   localStorage.setItem(storageKey, JSON.stringify(nevStorageKey));
+   storageKey[evt.target.name] = evt.target.value;
+   localStorage.setItem(storageKey, JSON.stringify(storageKey));
 };
 
 
