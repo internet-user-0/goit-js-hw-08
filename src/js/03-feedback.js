@@ -34,9 +34,7 @@ function initForm() {
       const lastObject = JSON.parse(nevStorageKey);
       Object.entries(lastObject).forEach(([name, value]) => {
          form.elements[name].value = value;
+         storageKey[name] = value;
       });
-      // storageKey = new Object.entries(lastObject).forEach(([name, value]) => {     ///// ЭТО СОВСЕМ НЕ РАБОТАЕТ
-      //    form.elements[name].value = value;
-      // });
    }
 };
